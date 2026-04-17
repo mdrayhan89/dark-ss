@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>DARK-X-RAYHAN - SNIPER TERMINAL</title>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
+        
+        /* উপরের ইনফো বার */
+        #top-bar {
+            position: absolute;
+            top: 0; left: 0; width: 100%;
+            height: 40px; /* লেখা বড় করার জন্য হাইট সামান্য বাড়ানো হয়েছে */
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+            border-bottom: 1px solid #111;
+            /* আপনার অনুরোধে ফন্ট সাইজ ১১ থেকে বাড়িয়ে ১৪ করা হয়েছে */
+            font-size: 14px; 
+            color: #fff;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .info-item { text-transform: uppercase; }
+        .green-text { color: #00ffaa; }
+
+        /* ব্যাকগ্রাউন্ড ইমেজ লেয়ার */
+        #bg-layer { 
+            position: absolute; 
+            width: 100%; height: 100%; 
+            background: url('/static/background.png') center/cover no-repeat; 
+            z-index: 1;
+            filter: brightness(0.3) contrast(1.1); 
+        }
+
+        /* চার্ট কন্টেইনার */
+        #tv-wrapper {
+            position: absolute;
+            width: 100%; 
+            height: calc(100% - 40px);
+            top: 40px; 
+            left: 0;
+            z-index: 10;
+            mix-blend-mode: screen; 
+            /* লোগো হাইড করার জন্য আপনার আগের সেটিংস বজায় রাখা হয়েছে */
+            clip-path: inset(0 0 80px 0); 
+        }
+
+        #tv-container { width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+
+    <div id="top-bar">
+        <div class="info-item">FEED: <span class="green-text">DARK API LIVE</span></div>
+        
+        <div class="info-item">SYMBOL: <span id="symbol-text">EURUSD_1M</span></div>
+        
+        <div class="info-item">OWNER: <span class="green-text">DARK-X-RAYHAN</span></div>
+    </div>
+
+    <div id="bg-layer"></div>
+    <div id="tv-wrapper">
+        <div id="tv-container"></div>
+    </div>
+
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        let pair = (urlParams.get('Pair') || 'EURUSD').toUpperCase();
+        document.getElementById('symbol-text').innerText = pair + "_1M";
+        
+        new TradingView.widget({
+            "autosize": true,
+            "symbol": "FX_IDC:" + pair,
+            "interval": "1",
+            "timezone": "Etc/UTC",
+            "theme": "dark",
+            "style": "1", 
+            "locale": "en",
+            "hide_top_toolbar": true,   
+            "hide_legend": true,        
+            "container_id": "tv-container",
+            "backgroundColor": "#000000",
+            "gridColor": "rgba(0, 0, 0, 0)",
+            "hide_side_toolbar": true,
+            "enable_publishing": false,
+            "allow_symbol_change": true,
+            "volume": false, 
+            "studies": [], 
+            "disabled_features": [
+                "volume_force_overlay",
+                "create_volume_indicator_by_default"
+            ],
+            "overrides": {
+                "paneProperties.background": "#000000",
+                "paneProperties.vertGridProperties.color": "rgba(0, 0, 0, 0)",
+                "paneProperties.horzGridProperties.color": "rgba(0, 0, 0, 0)",
+                "mainSeriesProperties.candleStyle.upColor": "#08ff95",
+                "mainSeriesProperties.candleStyle.downColor": "#ff2e2e",
+                "mainSeriesProperties.candleStyle.drawBorder": false
+            }
+        });
+    </script>
+</body>
+</html>
